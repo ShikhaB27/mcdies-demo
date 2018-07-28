@@ -81,8 +81,29 @@ function receivedMessage(data) {
 function handleApiAiAction(senderId, action, responseText, responseSpeech, contexts, parameters) {
 	switch (action) {
 
-		// case 'action':
-		// 								return sendTextMessage(senderId, responseText);
+		case 'pincode.request': {
+
+					if(isDefined(action) && parameters !== ''){
+
+						var pincode = parameters.any;
+						app1.requestCoordinate(pincode,(error, results) => {
+							if(error){
+								var displayText = 'Error fetching the data';
+							}else {
+								var displayText = `Latitude: ${results.latitude}  Longitude: ${results.longitude}`;
+								// var displayText = {
+								// displayText :`Latitude: ${results.latitude}  Longitude: ${results.longitude}`,
+								// speech : `Latitude: ${results.latitude}  Longitude: ${results.longitude}`
+								// }
+
+							}
+							console.log(displayText);
+							return sendTextMessage(senderId, displayText);
+						});
+					}
+					break;
+				}
+
 		default:
 			//unhandled action, just send back the text
 			sendTextMessage(senderId, responseText);
@@ -129,10 +150,10 @@ function sendToApiAi(sessionId, data) {
 
 function sendTextMessage(senderId, text) {
 	var messageData = {
-		fulfillment: {
+
 			speech: text,
 			displayText: text
-		}
+
 	}
 
 	return messageData;
