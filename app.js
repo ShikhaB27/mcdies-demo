@@ -70,11 +70,8 @@ app.post('/webhook/', function (req, res) {
 							}else {
 								text = `Latitude: ${results.latitude}  Longitude: ${results.longitude}`;
 								messageData = {
-									fulfillment: {
-											speech: text,
-											displayText: text
-									}
-
+										speech: text,
+										displayText: text
 										}
 
 							}
