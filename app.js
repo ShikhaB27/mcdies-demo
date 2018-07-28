@@ -87,14 +87,15 @@ function handleApiAiAction(senderId, action, responseText, responseSpeech, conte
 
 		case 'pincode.request': {
 					console.log('In action pincode');
+					var displayText = '';
 					if(isDefined(action) && parameters !== ''){
 
 						var pincode = parameters.any;
 						app1.requestCoordinate(pincode,(error, results) => {
 							if(error){
-								var displayText = 'Error fetching the data';
+								displayText = 'Error fetching the data';
 							}else {
-								var displayText = `Latitude: ${results.latitude}  Longitude: ${results.longitude}`;
+								displayText = `Latitude: ${results.latitude}  Longitude: ${results.longitude}`;
 								// var displayText = {
 								// displayText :`Latitude: ${results.latitude}  Longitude: ${results.longitude}`,
 								// speech : `Latitude: ${results.latitude}  Longitude: ${results.longitude}`
@@ -102,8 +103,10 @@ function handleApiAiAction(senderId, action, responseText, responseSpeech, conte
 
 							}
 							console.log(displayText);
-							console.log(sendTextMessage(senderId, displayText));
+							
 						});
+					var d=sendTextMessage(senderId, displayText));
+						console.log(d);
 					}
 					break;
 				}
