@@ -90,7 +90,7 @@ function handleApiAiAction(senderId, action, responseText, responseSpeech, conte
 					console.log('In action pincode');
 					var displayText = '';
 					if(isDefined(action) && parameters !== ''){
-
+						var text = '';
 						var pincode = parameters.any;
 						app1.requestCoordinate(pincode,(error, results) => {
 							if(error){
