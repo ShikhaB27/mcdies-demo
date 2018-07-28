@@ -136,19 +136,19 @@ function handleApiAiResponse(senderId, response) {
 function sendToApiAi(sessionId, data) {
 
 	console.log("In send to APIAI");
-	let apiaiRequest = apiAiService.textRequest(data, {
-		sessionId: sessionId
-	});
+// 	let apiaiRequest = apiAiService.textRequest(data, {
+// 		sessionId: sessionId
+// 	});
 
-	apiaiRequest.on('response', (response) => {
-		if (isDefined(response.result)) {
-			console.log(response.result);
-			return handleApiAiResponse(sessionId, response);
-		}
-	});
+// 	apiaiRequest.on('response', (response) => {
+		if (isDefined(data)) {
+			console.log(data);
+			return handleApiAiResponse(sessionId, data);
+		//}
+	}
 
-	apiaiRequest.on('error', (error) => console.error(error));
-	apiaiRequest.end();
+// 	apiaiRequest.on('error', (error) => console.error(error));
+// 	apiaiRequest.end();
 }
 
 
