@@ -39,6 +39,7 @@ app.use(bodyParser.json())
 const apiAiService = apiai(config.API_AI_CLIENT_ACCESS_TOKEN, {
 	language: "en",
 });
+
 const sessionIds = new Map();
 
 // Index route
@@ -48,11 +49,12 @@ app.get('/', function (req, res) {
 
 app.post('/webhook/', function (req, res) {
 	var data = req.body;
+	var sessionId = req.body.sessionId;
 	console.log(JSON.stringify(data));
 
 				if (data.status.code == 200) {
 					console.log('In /webhook/ function');
-				 	var resData= receivedMessage(data);
+				 	var resData= handleApiAiResponse(sessionId, data);
 					console.log('After received message event');
 					console.log(resData);
 				}else {
@@ -66,20 +68,20 @@ app.post('/webhook/', function (req, res) {
 });
 
 
-function receivedMessage(data) {
+// function receivedMessage(data) {
 
-	var actionName = data.result.action;
-	var parameters = data.result.parameters;
-	var message = data.result.resolvedQuery;
-	var sessionId = data.sessionId;
-	if (message) {
-		//send message to api.ai
-		console.log('In received message event');
-		return sendToApiAi(sessionId, data);
-	} else {
-		console.log("No user Input");
-	}
-}
+// 	var actionName = data.result.action;
+// 	var parameters = data.result.parameters;
+// 	var message = data.result.resolvedQuery;
+// 	var sessionId = data.sessionId;
+// 	if (message) {
+// 		//send message to api.ai
+// 		console.log('In received message event');
+// 		return sendToApiAi(sessionId, data);
+// 	} else {
+// 		console.log("No user Input");
+// 	}
+// }
 
 
 function handleApiAiAction(senderId, action, responseText, responseSpeech, contexts, parameters) {
@@ -130,29 +132,28 @@ function handleApiAiResponse(senderId, response) {
 	if (responseSpeech == '' && responseText == '' && !isDefined(action)) {
 		//api ai could not evaluate input.
 		console.log('Unknown query' + response.result.resolvedQuery);
-		sendTextMessage(senderId, "I'm not sure what you want. Can you be more specific?");
 	} else if (isDefined(action)) {
 		return handleApiAiAction(senderId, action, responseText, responseSpeech, contexts, parameters);
 	}
 }
 
-function sendToApiAi(sessionId, data) {
+// function sendToApiAi(sessionId, data) {
 
-	console.log("In send to APIAI");
-// 	let apiaiRequest = apiAiService.textRequest(data, {
-// 		sessionId: sessionId
-// 	});
+// 	console.log("In send to APIAI");
+// // 	let apiaiRequest = apiAiService.textRequest(data, {
+// // 		sessionId: sessionId
+// // 	});
 
-// 	apiaiRequest.on('response', (response) => {
-		if (isDefined(data)) {
-			console.log(data);
-			return handleApiAiResponse(sessionId, data);
-		//}
-	}
+// // 	apiaiRequest.on('response', (response) => {
+// 		if (isDefined(data)) {
+// 			console.log(data);
+// 			return handleApiAiResponse(sessionId, data);
+// 		//}
+// 	}
 
-// 	apiaiRequest.on('error', (error) => console.error(error));
-// 	apiaiRequest.end();
-}
+// // 	apiaiRequest.on('error', (error) => console.error(error));
+// // 	apiaiRequest.end();
+// }
 
 
 
