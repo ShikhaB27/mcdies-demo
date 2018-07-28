@@ -53,6 +53,7 @@ app.post('/webhook/', function (req, res) {
 				if (data.status.code == 200) {
 					console.log('In /webhook/ function');
 				 	var resData= receivedMessage(data);
+					console.log('After received message event');
 					console.log(resData);
 				}else {
 					console.log("Webhook received unknown message ");
@@ -93,24 +94,23 @@ function handleApiAiAction(senderId, action, responseText, responseSpeech, conte
 						var pincode = parameters.any;
 						app1.requestCoordinate(pincode,(error, results) => {
 							if(error){
-								displayText = 'Error fetching the data';
+								text = 'Error fetching the data';
 							}else {
-								displayText = `Latitude: ${results.latitude}  Longitude: ${results.longitude}`;
-								// var displayText = {
-								// displayText :`Latitude: ${results.latitude}  Longitude: ${results.longitude}`,
-								// speech : `Latitude: ${results.latitude}  Longitude: ${results.longitude}`
-								// }
+								text = `Latitude: ${results.latitude}  Longitude: ${results.longitude}`;
+								var messageData = {
+											speech: text,
+											displayText: text
+
+										}
 
 							}
-							console.log(displayText);
-							var d=sendTextMessage(senderId, displayText);
-						console.log(d);
+							console.log(messageData);
+							return messageData;
 						});
 					}
-					
-					break;
 				}
-
+					break;
+			
 		default:
 			//unhandled action, just send back the text
 			sendTextMessage(senderId, responseText);
@@ -157,17 +157,17 @@ function sendToApiAi(sessionId, data) {
 
 
 
-function sendTextMessage(senderId, text) {
+// function sendTextMessage(senderId, text) {
 	
-	console.log('In sendTextMessage');
-	var messageData = {
+// 	console.log('In sendTextMessage');
+// 	var messageData = {
 
-			speech: text,
-			displayText: text
+// 			speech: text,
+// 			displayText: text
 
-	}
-	console.log(messageData);
-}
+// 	}
+// 	console.log(messageData);
+// }
 
 function isDefined(obj) {
 	if (typeof obj == 'undefined') {
