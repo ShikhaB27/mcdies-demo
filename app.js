@@ -51,7 +51,9 @@ app.post('/webhook/', function (req, res) {
 	console.log(JSON.stringify(data));
 
 				if (data.status.code == 200) {
+					console.log('In /webhook/ function');
 				 	var resData= receivedMessage(data);
+					console.log(resData);
 				}else {
 					console.log("Webhook received unknown message ");
 				}
@@ -71,6 +73,7 @@ function receivedMessage(data) {
 	var sessionId = data.sessionId;
 	if (message) {
 		//send message to api.ai
+		console.log('In received message event');
 		return sendToApiAi(sessionId, data);
 	} else {
 		console.log("No user Input");
@@ -79,10 +82,11 @@ function receivedMessage(data) {
 
 
 function handleApiAiAction(senderId, action, responseText, responseSpeech, contexts, parameters) {
+	console.log('In handleAPIAiaction');
 	switch (action) {
 
 		case 'pincode.request': {
-
+					console.log('In action pincode');
 					if(isDefined(action) && parameters !== ''){
 
 						var pincode = parameters.any;
@@ -118,7 +122,8 @@ function handleApiAiResponse(senderId, response) {
 	let action = response.result.action;
 	let contexts = response.result.contexts;
 	let parameters = response.result.parameters;
-
+	
+	console.log('In handleAPIAiResponse');
 	if (responseSpeech == '' && responseText == '' && !isDefined(action)) {
 		//api ai could not evaluate input.
 		console.log('Unknown query' + response.result.resolvedQuery);
@@ -130,6 +135,7 @@ function handleApiAiResponse(senderId, response) {
 
 function sendToApiAi(sessionId, data) {
 
+	console.log("In send to APIAI");
 	let apiaiRequest = apiAiService.textRequest(data, {
 		sessionId: sessionId
 	});
@@ -149,6 +155,8 @@ function sendToApiAi(sessionId, data) {
 
 
 function sendTextMessage(senderId, text) {
+	
+	console.log('In sendTextMessage');
 	var messageData = {
 
 			speech: text,
