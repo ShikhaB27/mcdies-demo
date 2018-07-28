@@ -79,7 +79,7 @@ app.post('/webhook/', function (req, res) {
 
 							}
 							console.log(messageData);
-							res.sendStatus(200);
+							//res.sendStatus(200);
 							res.send(messageData);
 						});
 					}
