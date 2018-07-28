@@ -51,20 +51,46 @@ app.post('/webhook/', function (req, res) {
 	var data = req.body;
 	var sessionId = req.body.sessionId;
 	console.log(JSON.stringify(data));
+	var actionName = req.body.result.action;
+ 	var parameters = req.body.result.parameters;
+ 	var message = req.body.result.resolvedQuery;
+ 	var messageData= '' ;
+	
+       switch (actionName) {
 
-				if (data.status.code == 200) {
-					console.log('In /webhook/ function');
-				 	var resData= handleApiAiResponse(sessionId, data);
-					console.log('After received message event');
-					console.log(resData);
-				}else {
-					console.log("Webhook received unknown message ");
+		case 'pincode.request': {
+					console.log('In action pincode');
+					var displayText = '';
+					if(isDefined(action) && parameters !== ''){
+						var text = '';
+						var pincode = parameters.any;
+						app1.requestCoordinate(pincode,(error, results) => {
+							if(error){
+								text = 'Error fetching the data';
+							}else {
+								text = `Latitude: ${results.latitude}  Longitude: ${results.longitude}`;
+								messageData = {
+											speech: text,
+											displayText: text
+
+										}
+
+							}
+							console.log(messageData);
+							
+						});
+					}
 				}
-
+					break;
+			
+		default:
+			//unhandled action, just send back the text
+			sendTextMessage(senderId, responseText);
+	}
 		// Assume all went well.
 		// You must send back a 200, within 20 seconds
 		res.sendStatus(200);
-		res.send(resData);
+		res.send(messageData);
 });
 
 
@@ -84,58 +110,58 @@ app.post('/webhook/', function (req, res) {
 // }
 
 
-function handleApiAiAction(senderId, action, responseText, responseSpeech, contexts, parameters) {
-	console.log('In handleAPIAiaction');
-	switch (action) {
+// function handleApiAiAction(senderId, action, responseText, responseSpeech, contexts, parameters) {
+// 	console.log('In handleAPIAiaction');
+// 	switch (action) {
 
-		case 'pincode.request': {
-					console.log('In action pincode');
-					var displayText = '';
-					if(isDefined(action) && parameters !== ''){
-						var text = '';
-						var pincode = parameters.any;
-						app1.requestCoordinate(pincode,(error, results) => {
-							if(error){
-								text = 'Error fetching the data';
-							}else {
-								text = `Latitude: ${results.latitude}  Longitude: ${results.longitude}`;
-								var messageData = {
-											speech: text,
-											displayText: text
+// 		case 'pincode.request': {
+// 					console.log('In action pincode');
+// 					var displayText = '';
+// 					if(isDefined(action) && parameters !== ''){
+// 						var text = '';
+// 						var pincode = parameters.any;
+// 						app1.requestCoordinate(pincode,(error, results) => {
+// 							if(error){
+// 								text = 'Error fetching the data';
+// 							}else {
+// 								text = `Latitude: ${results.latitude}  Longitude: ${results.longitude}`;
+// 								var messageData = {
+// 											speech: text,
+// 											displayText: text
 
-										}
+// 										}
 
-							}
-							console.log(messageData);
-							return messageData;
-						});
-					}
-				}
-					break;
+// 							}
+// 							console.log(messageData);
+// 							return messageData;
+// 						});
+// 					}
+// 				}
+// 					break;
 			
-		default:
-			//unhandled action, just send back the text
-			sendTextMessage(senderId, responseText);
-	}
-}
+// 		default:
+// 			//unhandled action, just send back the text
+// 			sendTextMessage(senderId, responseText);
+// 	}
+// }
 
 
-function handleApiAiResponse(senderId, response) {
-	let responseSpeech = response.result.fulfillment.speech;
-	let responseText = response.result.fulfillment.displayText;
-	let messages = response.result.fulfillment.messages;
-	let action = response.result.action;
-	let contexts = response.result.contexts;
-	let parameters = response.result.parameters;
+// function handleApiAiResponse(senderId, response) {
+// 	let responseSpeech = response.result.fulfillment.speech;
+// 	let responseText = response.result.fulfillment.displayText;
+// 	let messages = response.result.fulfillment.messages;
+// 	let action = response.result.action;
+// 	let contexts = response.result.contexts;
+// 	let parameters = response.result.parameters;
 	
-	console.log('In handleAPIAiResponse');
-	if (responseSpeech == '' && responseText == '' && !isDefined(action)) {
-		//api ai could not evaluate input.
-		console.log('Unknown query' + response.result.resolvedQuery);
-	} else if (isDefined(action)) {
-		return handleApiAiAction(senderId, action, responseText, responseSpeech, contexts, parameters);
-	}
-}
+// 	console.log('In handleAPIAiResponse');
+// 	if (responseSpeech == '' && responseText == '' && !isDefined(action)) {
+// 		//api ai could not evaluate input.
+// 		console.log('Unknown query' + response.result.resolvedQuery);
+// 	} else if (isDefined(action)) {
+// 		return handleApiAiAction(senderId, action, responseText, responseSpeech, contexts, parameters);
+// 	}
+// }
 
 // function sendToApiAi(sessionId, data) {
 
