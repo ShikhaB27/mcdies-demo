@@ -103,11 +103,11 @@ function handleApiAiAction(senderId, action, responseText, responseSpeech, conte
 
 							}
 							console.log(displayText);
-							
+							var d=sendTextMessage(senderId, displayText);
+						console.log(d);
 						});
 					}
-					var d=sendTextMessage(senderId, displayText);
-						console.log(d);
+					
 					break;
 				}
 
