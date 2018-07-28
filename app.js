@@ -6,7 +6,7 @@ const express = require('express');
 const crypto = require('crypto');
 const bodyParser = require('body-parser');
 const request = require('request');
-const sfcc = require('./sfcc-apis');
+const sfcc = require('./qsr-apis');
 const app = express();
 const uuid = require('uuid');
 
