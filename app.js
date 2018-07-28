@@ -102,7 +102,7 @@ function handleApiAiAction(senderId, action, responseText, responseSpeech, conte
 
 							}
 							console.log(displayText);
-							return sendTextMessage(senderId, displayText);
+							console.log(sendTextMessage(senderId, displayText));
 						});
 					}
 					break;
@@ -163,8 +163,15 @@ function sendTextMessage(senderId, text) {
 			displayText: text
 
 	}
+	
+	app.post('/webhook/', function (req, res) {
+	var data = req.body;
+	console.log(JSON.stringify(data));
 
-	return messageData;
+		res.sendStatus(200);
+		res.send(messageData);
+});
+	console.log(messageData);
 }
 
 function isDefined(obj) {
