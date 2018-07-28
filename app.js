@@ -61,7 +61,7 @@ app.post('/webhook/', function (req, res) {
 		case 'pincode.request': {
 					console.log('In action pincode');
 					var displayText = '';
-					if(isDefined(action) && parameters !== ''){
+					if(isDefined(actionName) && parameters !== ''){
 						var text = '';
 						var pincode = parameters.any;
 						app1.requestCoordinate(pincode,(error, results) => {
