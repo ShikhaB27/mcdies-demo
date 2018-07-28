@@ -70,14 +70,17 @@ app.post('/webhook/', function (req, res) {
 							}else {
 								text = `Latitude: ${results.latitude}  Longitude: ${results.longitude}`;
 								messageData = {
+									fulfillment: {
 											speech: text,
 											displayText: text
+									}
 
 										}
 
 							}
 							console.log(messageData);
-							
+							res.sendStatus(200);
+							res.send(messageData);
 						});
 					}
 				}
@@ -89,8 +92,7 @@ app.post('/webhook/', function (req, res) {
 	}
 		// Assume all went well.
 		// You must send back a 200, within 20 seconds
-		res.sendStatus(200);
-		res.send(messageData);
+		
 });
 
 
