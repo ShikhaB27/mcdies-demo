@@ -105,9 +105,9 @@ function handleApiAiAction(senderId, action, responseText, responseSpeech, conte
 							console.log(displayText);
 							
 						});
+					}
 					var d=sendTextMessage(senderId, displayText);
 						console.log(d);
-					}
 					break;
 				}
 
@@ -166,14 +166,6 @@ function sendTextMessage(senderId, text) {
 			displayText: text
 
 	}
-	
-	app.post('/webhook/', function (req, res) {
-	var data = req.body;
-	console.log(JSON.stringify(data));
-
-		res.sendStatus(200);
-		res.send(messageData);
-});
 	console.log(messageData);
 }
 
