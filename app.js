@@ -130,7 +130,7 @@ function handleApiAiResponse(senderId, response) {
 
 function sendToApiAi(sessionId, data) {
 
-	let apiaiRequest = apiAiService.textRequest(text, {
+	let apiaiRequest = apiAiService.textRequest(data, {
 		sessionId: sessionId
 	});
 
