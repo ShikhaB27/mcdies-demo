@@ -70,7 +70,7 @@ app.post('/webhook/', function (req, res) {
 							}else {
 								//text = `Latitude: ${results.latitude}  Longitude: ${results.longitude}`;
 								var latitude= results.latitude;
-// 								messageData = {
+								messageData = {
 // 										speech: text,
 // 										displayText: text
 									
@@ -80,12 +80,12 @@ app.post('/webhook/', function (req, res) {
 											“latitude”:  latitude
 											}
 										}
-									//}
+									}
 
 							}
-							console.log(latitude);
+							console.log(messageData);
 							//res.sendStatus(200);
-							res.send(event);
+							res.send(messageData);
 						});
 					}
 				}
