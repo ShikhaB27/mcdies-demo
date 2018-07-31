@@ -74,10 +74,10 @@ app.post('/webhook/', function (req, res) {
 // 										speech: text,
 // 										displayText: text
 									
-									"event":{  
-											"name":"pincode-event",
-											"data":{
-											“latitude”:  latitude
+									event:{  
+											name:"pincode-event",
+											data:{
+											latitude:  latitude
 											}
 										}
 									}
