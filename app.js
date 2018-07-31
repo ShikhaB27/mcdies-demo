@@ -68,16 +68,24 @@ app.post('/webhook/', function (req, res) {
 							if(error){
 								text = 'Error fetching the data';
 							}else {
-								text = `Latitude: ${results.latitude}  Longitude: ${results.longitude}`;
-								messageData = {
-										speech: text,
-										displayText: text
+								//text = `Latitude: ${results.latitude}  Longitude: ${results.longitude}`;
+								var latitude= results.latitude;
+// 								messageData = {
+// 										speech: text,
+// 										displayText: text
+									
+									"event":{  
+											"name":"pincode-event",
+											"data":{
+											“latitude”:  latitude
+											}
 										}
+									//}
 
 							}
-							console.log(messageData);
+							console.log(latitude);
 							//res.sendStatus(200);
-							res.send(messageData);
+							res.send(event);
 						});
 					}
 				}
